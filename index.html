@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+    <script src="js/app.js" type="text/javascript"></script>
+    <title>Simulador de Autenticación Biometrica</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Simulador de Autenticación Biometrica</h1>
+      <ol class="list-unstyled">
+        <li>1. Introduzca una cadena adecuada para "Primer conjunto de datos"</li>
+        <li>2. Ingrese la misma cadena en "Segundo conjunto de datos""</li>
+      </ol>
+      <form>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-group" id="firstDataset">
+              <h5>Primer conjunto de datos</h5>
+              <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <input
+                    class="form-control"
+                    id="firstData"
+                    type="text"
+                    name="password"
+                    placeholder="Data 1"
+                    autocomplete="off"
+                    required=""
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="password"
+                    placeholder="Data 2"
+                    autocomplete="off"
+                    required=""
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="password"
+                    placeholder="Data 3"
+                    autocomplete="off"
+                    required=""
+                  />
+                </div>
+              </div>
+              <div class="form-row" id="addDatasetArea"></div>
+              <button class="btn btn btn-secondary" id="insert" type="button">Establecer un valor determinado</button>
+            </div>
+            <div class="form-group" id="secondDataset">
+              <div class="form-group">
+                <h5>Segundo conjunto de datos</h5>
+                <input
+                  class="form-control"
+                  id="secondData"
+                  type="mext"
+                  name="passwordConfirm"
+                  placeholder="Ingrese la misma cadena"
+                  required=""
+                  disabled=""
+                /><small class="form-text text-muted" id="caution2"></small>
+              </div>
+              <button class="btn btn-primary" id="compare" type="button" disabled="">Comparación</button>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card bg-light mb-3">
+              <div class="card-header">Resultado</div>
+              <div class="card-body">
+                <p class="card-title">Probabilidad de ser él mismo</p>
+                <h4 class="card-text" id="result">--</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <canvas id="myChart"></canvas>
+    </div>
+  </body>
+</html>
