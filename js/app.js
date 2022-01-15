@@ -3,74 +3,74 @@
 $(function () {
   var typeTime;
   var upTime;
-  var startTime1; //基準値１
+  var startTime1; //Valor de referencia １
 
-  var startTime2; //基準値２
+  var startTime2; //Valor de referencia ２
 
-  var arrayTotalKey = []; //多次元配列 (入力間隔)
+  var arrayTotalKey = []; //Matriz Multidimensional (Intervalo de Entrada)
 
-  var arrayTotalDU = []; //多次元配列 (ダウンからアップ)
+  var arrayTotalDU = []; //Matriz Multidimensional (De abajo a arriba)
 
-  var arrayAveKey1 = []; //入力間隔１
+  var arrayAveKey1 = []; //Intervalo de entrada １
 
-  var arrayAveKey2 = []; //入力間隔２
+  var arrayAveKey2 = []; //Intervalo de entrada 2
 
-  var arrayAveDU1 = []; //ダウンからアップ１
+  var arrayAveDU1 = []; //Hasta 1 arriba
 
-  var arrayAveDU2 = []; //ダウンからアップ２
+  var arrayAveDU2 = []; //Hasta 2 arriba
 
-  var arrayDiffKey = []; //入力間隔差分
+  var arrayDiffKey = []; //Diferencia de Intervalo de entrada
 
-  var arrayDiffDU = []; //ダウンからアップ差分
+  var arrayDiffDU = []; //Diferencia de abajo a arriba
 
-  var arrayKeycode = []; //入力値
+  var arrayKeycode = []; //Valor de entrada
 
   $("#firstDataset input").focus(function () {
-    var click = $(this).data("click"); //data属性追加　
+    var click = $(this).data("click"); //Agregar atributo de datos　
 
     if (!click) {
-      //input一つに対して一回実行
-      var arrayKey = []; //入力間隔（一時保管）
+      //Ingresa una vez para cada entrada
+      var arrayKey = []; //Intervalo de entrada（almacenamiento temporal）
 
-      var arrayDownup = []; //ダウンからアップまで（一時保管）
+      var arrayDownup = []; //De abajo hacia arriba（almacenamiento temporal）
 
       arrayTotalKey.push(arrayKey);
       arrayTotalDU.push(arrayDownup);
       arrayKey.length = 0;
       arrayDownup.length = 0;
-      startTime1 = null; //入力間隔計測
+      startTime1 = null; //Medición del intervalo de entrada
 
       $(this).on('keydown', function (event) {
         if (event.keyCode == 8) {
           $(this).val("");
           arrayKey.length = 0;
           arrayDownup.length = 0;
-          startTime1 = null; //$(this).html("<small class="form-text text-muted">Please enter from the beginning.</small>");
-        } else if (event.keyCode == 9) {//tabキーが押された場合の処理
+          startTime1 = null; //$(this).html("<small class="form-text text-muted">Por favor ingrese desde el principio.</small>");
+        } else if (event.keyCode == 9) {//Que hacer si se presiona la tecla de tabulación
         } else if (startTime1 == null) {
           typeTime = new Date().getTime();
-          startTime1 = typeTime; //最初のkeypressミリ秒をstartTime1変数に格納
+          startTime1 = typeTime; //Almacenar la primera pulsación de tecla milisegundos en variable startTime1
 
           arrayKey.push(0);
         } else if (arrayKey.length == 0) {
           typeTime = new Date().getTime();
-          arrayKey.push(typeTime - startTime1); //2回目のkeypressミリ秒からstartTime1を引く
+          arrayKey.push(typeTime - startTime1); //Restar startTime1 de la segunda pulsación de tecla milisegundos
 
           console.log(arrayKey);
         } else {
           typeTime = new Date().getTime();
           arrayKey.push(typeTime - (startTime1 + arrayKey.reduce(function (a, x) {
             return a += x;
-          }, 0))); //3回目以降はkeypressミリ秒からstartTime1＋keyとkey間ミリ秒を引く
+          }, 0))); //Después de la tercera vez, reste startTime1 + key y key milisegundos de los milisegundos de pulsación de tecla.
 
           console.log(arrayKey);
         }
-      }); //ダウンからアップ計測
+      }); //Medir de abajo hacia arriba
 
       $(this).on('keyup', function (event) {
         if (event.keyCode == 8) {
           arrayDownup.length = 0;
-        } else if (event.keyCode == 9) {//tabキーが押された場合の処理
+        } else if (event.keyCode == 9) {//Qué hacer si se presiona la tecla de tabulación
         } else {
           upTime = new Date().getTime();
           var diff = upTime - typeTime;
@@ -80,25 +80,25 @@ $(function () {
       });
       $(this).data("click", true);
     }
-  }); //平均値計算、入力値の差異検証の関数
+  }); //Función para el cálculo del valor medio y la verificación de la diferencia del valor de entrada
 
   function averageCalc(array, num, arrayResult) {
-    var arrayMaxmin = []; //最大値、最小値検証用配列
+    var arrayMaxmin = []; //Valor máximo, matriz de validación de valor mínimo
 
     for (var i = 0; i < array[0].length; i++) {
-      //入力文字数だけ回す
+      //Pasar por el número de caracteres de entrada
       var total = 0;
       arrayMaxmin.length = 0;
 
       for (var arr = 0; arr < array.length; arr++) {
-        //入力回数だけ回す（inputの数）
+        //Gire tantas veces como escriba (número de entradas)
         arrayMaxmin.push(array[arr][i]);
-        total += array[arr][i]; //array[配列番号][インデックス番号]
+        total += array[arr][i]; //Array [número de matriz] [número de índice]
       }
 
-      var minData = Math.min.apply(null, arrayMaxmin); //最小値精査
+      var minData = Math.min.apply(null, arrayMaxmin); //Escrutinio del valor mínimo
 
-      var maxData = Math.max.apply(null, arrayMaxmin); //最大値精査
+      var maxData = Math.max.apply(null, arrayMaxmin); //Examen de valor máximo
 
       var diff = maxData - minData;
 
@@ -109,14 +109,14 @@ $(function () {
 
       arrayResult.push(Math.round(total / array.length));
     }
-  } //firstDataset検証(平均値計算)
+  } //verificación del primer conjunto de datos (cálculo del valor medio)
 
 
   document.getElementById("insert").addEventListener('click', function () {
     try {
-      arrayAveKey1.length = 0; //配列初期化
+      arrayAveKey1.length = 0; //Inicialización de matriz
 
-      var baseValue = $("#firstDataset input").eq(0).val(); //最初の要素value取得
+      var baseValue = $("#firstDataset input").eq(0).val(); //Obtiene el primer valor del elemento
 
       $("#firstDataset input").each(function (i) {
         var value = $(this).val();
@@ -128,11 +128,11 @@ $(function () {
           alert("El contenido de entrada no coincide");
           throw new Error('end');
         }
-      }); //平均値計算
+      }); //Cálculo del valor medio
 
-      averageCalc(arrayTotalKey, 200, arrayAveKey1); //入力間隔に0.2秒以上の差異許容
+      averageCalc(arrayTotalKey, 200, arrayAveKey1); //Permita 0,2 segundos o más de diferencia en el intervalo de entrada
 
-      averageCalc(arrayTotalDU, 200, arrayAveDU1); //キーダウンからアップまでに0.2秒以上の差異許容
+      averageCalc(arrayTotalDU, 200, arrayAveDU1); //Permitir una diferencia de 0,2 segundos o más desde la tecla hacia abajo hacia arriba
 
       $("#firstDataset input,addDataset,#insert").prop("disabled", true);
       $("#secondDataset input,#compare").prop("disabled", false);
@@ -143,17 +143,17 @@ $(function () {
   /*---------------------------------------------------------------------------------
   -----------------------------------------------------------------------------------*/
 
-  var secondData = document.getElementById("secondData"); //入力間隔計測
+  var secondData = document.getElementById("secondData"); //Medición del intervalo de entrada
 
   secondData.addEventListener('keydown', function (event) {
     if (event.keyCode == 8) {
       $("#secondData").val("");
       arrayAveKey2.length = 0;
       startTime2 = null;
-      arrayKeycode.length = 0; //チャート生成用配列初期化
+      arrayKeycode.length = 0; //Inicialización de matriz para la generación de gráficos
       //var caution = document.getElementById("caution2");
-      //caution.innerHTML = "Please enter the tempo well to the end.";
-    } else if (event.keyCode == 9) {//tabキーが押された場合の処理
+      //caution.innerHTML = "Por favor ingrese el tempo hasta el final.";
+    } else if (event.keyCode == 9) {//Qué hacer si se presiona la tecla de tabulación
     } else if (startTime2 == null) {
       typeTime = new Date().getTime();
       startTime2 = typeTime;
@@ -169,19 +169,19 @@ $(function () {
       }, 0)));
       console.log(arrayAveKey2);
     }
-  }); //ダウンからアップ計測
+  }); //Medida de abajo a arriba
 
   secondData.addEventListener('keyup', function (event) {
     if (event.keyCode == 8) {
       arrayAveDU2.length = 0;
-    } else if (event.keyCode == 9) {//tabキーが押された場合の処理
+    } else if (event.keyCode == 9) {//Qué hacer si se presiona la tecla de tabulación
     } else {
       upTime = new Date().getTime();
       var diff = upTime - typeTime;
       arrayAveDU2.push(diff);
-      arrayKeycode.push(String.fromCharCode(event.keyCode)); //チャート生成用キーコード格納
+      arrayKeycode.push(String.fromCharCode(event.keyCode)); //Almacenamiento de códigos clave para la generación de gráficos
     }
-  }); //差分計算関数
+  }); //Función de cálculo de diferencia
 
   function diffCalc(arrayDiff, arrayData1, arrayData2) {
     arrayDiff.length = 0;
@@ -196,18 +196,18 @@ $(function () {
         arrayDiff.push(diff);
       }
     }
-  } //結果計算関数
+  } //Función de cálculo de resultado
 
 
   function resultCalc(arrayDiff) {
     var total = 0;
 
     for (var i = 0; i < arrayDiff.length; i++) {
-      total += 100 - arrayDiff[i]; //基準値100
+      total += 100 - arrayDiff[i]; //Valor de referencia 100
     }
 
     return Math.round(total / arrayAveKey2.length);
-  } //グラフの生成関数
+  } //Función de generación de gráficos
 
 
   function chart() {
@@ -244,7 +244,7 @@ $(function () {
         }]
       }
     });
-  } //最終処理
+  } //Procesamiento final
 
 
   document.getElementById("compare").addEventListener('click', function () {
@@ -261,7 +261,7 @@ $(function () {
       document.getElementById('result').innerHTML = result + "%";
       chart();
     }
-  }); //データセット追加処理
+  }); //Proceso de adición de conjuntos de datos
 
   /*
   {
